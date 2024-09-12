@@ -20,19 +20,7 @@ const UserType=new GraphQLObjectType({
     })
 })
 
-const RoomType=new GraphQLObjectType(
-    {
-        name:"Room",
-        description:"Represents Room",
-        fields:()=>({
-            id:{type:new GraphQLNonNull(GraphQLString)},
-            updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
-            roomnumber:{type:new GraphQLNonNull(GraphQLInt)},
-            buildingname:{type:new GraphQLNonNull(GraphQLString)},
-            taken:{type:new GraphQLNonNull(GraphQLBoolean)},
-        })
-    }
-)
+
 
 const BuildingType=new GraphQLObjectType(
     {
@@ -46,6 +34,24 @@ const BuildingType=new GraphQLObjectType(
                 roomsavailable:{type: new GraphQLNonNull(GraphQLInt)}
             }
         )
+    }
+)
+
+const RoomType=new GraphQLObjectType(
+    {
+        name:"Room",
+        description:"Represents Room",
+        fields:()=>({
+            id:{type:new GraphQLNonNull(GraphQLString)},
+            updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
+            roomnumber:{type:new GraphQLNonNull(GraphQLInt)},
+            buildingname:{type:new GraphQLNonNull(GraphQLString)},
+            taken:{type:new GraphQLNonNull(GraphQLBoolean)},
+            building:{
+                type:BuildingType,
+                resolve:(room)=>Building.findOne({name:room.buildingname})
+            }
+        })
     }
 )
 
