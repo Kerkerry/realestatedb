@@ -192,7 +192,7 @@ const RootMutation=new GraphQLObjectType(
                         roomsavailable:args.roomsavailable
                     })
 
-                    building.save().then(addedBuilding=>addedBuilding)
+                    return building.save().then(addedBuilding=>addedBuilding)
                     .catch(err=>err)
                 }
 
@@ -209,7 +209,7 @@ const RootMutation=new GraphQLObjectType(
                 roomsavailable:{type:new GraphQLNonNull(GraphQLInt)}
                } ,
                resolve:(parent,args)=>{
-                Building.findByIdAndUpdate(
+                return Building.findByIdAndUpdate(
                     {"_id":args.ID},
                     {
                         updatedbyid:args.updatedbyid,
@@ -231,15 +231,15 @@ const RootMutation=new GraphQLObjectType(
                 args:{
                     ID:{type:new GraphQLNonNull(GraphQLString)},
                 },
-                resolve:(parent,args)=>BuildingType.findByIdAndDelete({"_id":args.ID})
+                resolve:(parent,args)=>Building.findByIdAndDelete({"_id":args.ID})
                 .then(deletedBuilding=>deletedBuilding)
                 .catch(err=>err)
             },
 // Room mutations begins
             addRoom:{
                 description:"Adds a new room",
-                type:BuildingType,
-                arsg:{
+                type:RoomType,
+                args:{
                     updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
                     roomnumber:{type:new GraphQLNonNull(GraphQLInt)},
                     buildingname:{type:new GraphQLNonNull(GraphQLString)},
@@ -252,7 +252,7 @@ const RootMutation=new GraphQLObjectType(
                         buildingname:args.buildingname,
                         taken:args.taken
                     })
-                    room.save().then(addedRoom=>addedRoom).catch(err=>err)
+                   return room.save().then(addedRoom=>addedRoom).catch(err=>err)
                 }
             },
             updateRoom:{
@@ -265,8 +265,8 @@ const RootMutation=new GraphQLObjectType(
                     buildingname:{type:new GraphQLNonNull(GraphQLString)},
                     taken:{type:new GraphQLNonNull(GraphQLBoolean)},
                 },
-                resolve:(parent,resolve)=>{
-                    Room.findByIdAndUpdate(
+                resolve:(parent,args)=>{
+                    return Room.findByIdAndUpdate(
                         {"_id":args.ID},
                         {
                             updatedbyid:args.updatedbyid,
@@ -289,8 +289,8 @@ const RootMutation=new GraphQLObjectType(
                 args:{
                     ID:{type:new GraphQLNonNull(GraphQLString)},
                 },
-                resolve:(parent,args)=>Room.findOneAndDelete({"_id":args.ID})
-                .the(deletedRoom=>deletedRoom)
+                resolve:(parent,args)=>Room.findByIdAndDelete({"_id":args.ID})
+                .then(deletedRoom=>deletedRoom)
                 .catch(err=>err)
             }
         })
