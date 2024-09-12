@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 const Schema=mongoose.Schema;
 
 const BuildingSchema=new Schema(
-    {
+    {   
+        updatedbyid:{
+            type:String,
+            required:true
+        },
         name:{
             type:String,
             required:true

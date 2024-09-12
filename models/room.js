@@ -4,6 +4,10 @@ const Schema=mongoose.Schema;
 
 const RoomSchema=new Schema(
     {
+        updatedbyid:{
+            type:String,
+            required:true
+        },
         roomnumber:{
             type:Number,
             required:true

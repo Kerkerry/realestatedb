@@ -26,6 +26,7 @@ const RoomType=new GraphQLObjectType(
         description:"Represents Room",
         fields:()=>({
             id:{type:new GraphQLNonNull(GraphQLString)},
+            updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
             roomnumber:{type:new GraphQLNonNull(GraphQLInt)},
             buildingname:{type:new GraphQLNonNull(GraphQLString)},
             taken:{type:new GraphQLNonNull(GraphQLBoolean)},
@@ -39,6 +40,7 @@ const BuildingType=new GraphQLObjectType(
         description:"Represents a building",
         fields:()=>(
             {   id:{type:new GraphQLNonNull(GraphQLString)},
+                updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
                 name:{type:new GraphQLNonNull(GraphQLString)},
                 totalrooms: {type: new GraphQLNonNull(GraphQLInt)},
                 roomsavailable:{type: new GraphQLNonNull(GraphQLInt)}
@@ -177,12 +179,14 @@ const RootMutation=new GraphQLObjectType(
                 description:"Adds building",
                 type:BuildingType,
                 args:{
+                    updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
                     name: {type:new GraphQLNonNull(GraphQLString)},
                     totalrooms:{type:new GraphQLNonNull(GraphQLInt)},
                     roomsavailable:{type:new GraphQLNonNull(GraphQLInt)}
                 },
                 resolve:(parent,args)=>{
                     const building=new Building({
+                        updatedbyid:args.updatedbyid,
                         name: args.name,
                         totalrooms:args.totalrooms,
                         roomsavailable:args.roomsavailable
@@ -199,6 +203,7 @@ const RootMutation=new GraphQLObjectType(
                type:BuildingType,
                args:{
                 ID:{type:new GraphQLNonNull(GraphQLString)},
+                updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
                 name: {type:new GraphQLNonNull(GraphQLString)},
                 totalrooms:{type:new GraphQLNonNull(GraphQLInt)},
                 roomsavailable:{type:new GraphQLNonNull(GraphQLInt)}
@@ -207,6 +212,7 @@ const RootMutation=new GraphQLObjectType(
                 Building.findByIdAndUpdate(
                     {"_id":args.ID},
                     {
+                        updatedbyid:args.updatedbyid,
                         name:args.name,
                         totalrooms:args.totalrooms,
                         roomsavailable:args.roomsavailable
@@ -234,12 +240,14 @@ const RootMutation=new GraphQLObjectType(
                 description:"Adds a new room",
                 type:BuildingType,
                 arsg:{
+                    updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
                     roomnumber:{type:new GraphQLNonNull(GraphQLInt)},
                     buildingname:{type:new GraphQLNonNull(GraphQLString)},
                     taken:{type:new GraphQLNonNull(GraphQLBoolean)},
                 },
                 resolve:(parent,args)=>{
                     const room=new Room({
+                        updatedbyid:args.updatedbyid,
                         roomnumber:args.roomnumber,
                         buildingname:args.buildingname,
                         taken:args.taken
@@ -252,6 +260,7 @@ const RootMutation=new GraphQLObjectType(
                 type:RoomType,
                 args:{
                     ID:{type:new GraphQLNonNull(GraphQLString)},
+                    updatedbyid:{type:new GraphQLNonNull(GraphQLString)},
                     roomnumber:{type:new GraphQLNonNull(GraphQLInt)},
                     buildingname:{type:new GraphQLNonNull(GraphQLString)},
                     taken:{type:new GraphQLNonNull(GraphQLBoolean)},
@@ -260,6 +269,7 @@ const RootMutation=new GraphQLObjectType(
                     Room.findByIdAndUpdate(
                         {"_id":args.ID},
                         {
+                            updatedbyid:args.updatedbyid,
                             roomnumber:args.roomnumber,
                             buildingname:args.buildingname,
                             taken:args.taken,
