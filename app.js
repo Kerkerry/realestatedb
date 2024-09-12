@@ -17,9 +17,13 @@ const UserType=new GraphQLObjectType({
         secondname:{type:new GraphQLNonNull(GraphQLString)},
         email:{type:new GraphQLNonNull(GraphQLString)},
         password:{type:new GraphQLNonNull(GraphQLString)},
-        building:{
+        buildings:{
             type:new GraphQLList(BuildingType),
             resolve:(user)=>Building.find({updatedbyid:user.id})
+        },
+        rooms:{
+            type:new GraphQLList(RoomType),
+            resolve:(user)=>Room.find({updatedbyid:user.id})
         }
     })
 })
