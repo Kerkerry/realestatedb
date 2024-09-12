@@ -17,6 +17,10 @@ const UserType=new GraphQLObjectType({
         secondname:{type:new GraphQLNonNull(GraphQLString)},
         email:{type:new GraphQLNonNull(GraphQLString)},
         password:{type:new GraphQLNonNull(GraphQLString)},
+        building:{
+            type:new GraphQLList(BuildingType),
+            resolve:(user)=>Building.find({updatedbyid:user.id})
+        }
     })
 })
 
